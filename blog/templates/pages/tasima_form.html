@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} Taşıma Formu {% endblock %}
+
+{% block content %} 
+
+    <h3 style=" text-align: center; ">TAŞIMA FORM EKRANI</h3>
+
+    <form method="POST", autocomplete="off">
+        {{form.non_field_errors}}
+        {% csrf_token %}
+
+        {{ form|crispy }}
+
+
+        <input type="submit" class="btn btn-danger mt-3 mb-3" value="Gönder"/>
+    </form>
+{% endblock %}

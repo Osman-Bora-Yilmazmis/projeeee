@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block title %} Taşıma Yanıt Formu {% endblock %}
+
+{% block content %} 
+
+    <h3 style=" text-align: center; ">TAŞIMA YANIT EKRANI</h3>
+
+    <form method="POST", autocomplete="off">
+        {{tasima_yanit.non_field_errors}}
+        {% csrf_token %}
+
+        {{ tasima_yanit|crispy }}
+
+
+        <input type="submit" class="btn btn-danger mt-3 mb-3" value="Görevli Ata"/>
+        <input type="submit" class="btn btn-danger mt-3 mb-3" value="Onayla"/>
+        <input type="submit" class="btn btn-danger mt-3 mb-3" value="Reddet"/>
+    </form>
+{% endblock %}

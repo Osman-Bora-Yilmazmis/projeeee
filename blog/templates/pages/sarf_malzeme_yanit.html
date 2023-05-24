@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+<body>
+    
+{% block title %} Sarf Malzeme Yanıt Formu {% endblock %}
+
+{% block content %} 
+
+    <h3 style=" text-align: center; ">SARF MALZEME YANIT EKRANI {{sarf_yanit.form_gonderen.email}}</h3>
+
+    <form method="POST", autocomplete="off">
+        {{sarf_yanit.non_field_errors}}
+        {% csrf_token %}
+        {{ sarf_yanit|crispy }}
+
+        <input type="submit" class="btn btn-danger mt-3 mb-3" value="Onayla" />
+        <input type="submit" class="btn btn-danger mt-3 mb-3" value="Reddet"/>
+    </form>
+{% endblock %}
+</body>

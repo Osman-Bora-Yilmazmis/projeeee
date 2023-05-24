@@ -1,0 +1,31 @@
+.navbar .navbar-brand{
+    background-color: #3F4850;
+    color: white;
+  }
+  .navbar .nav-link {
+    color: white;
+  }
+  .navbar-nav > li:not(:last-child) {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-nav > li:not(:last-child)::after {
+    content: "";
+    display: block;
+    height: 50%;
+    border-right: 1px solid white;
+    margin-left: 10px;
+  }
+
+  #sunportal
+  {
+    max-width: 2000px;
+    padding-right: 41px;
+    padding-left: 41px;
+  }
+
+  .text-center {
+    text-align: center;
+  }

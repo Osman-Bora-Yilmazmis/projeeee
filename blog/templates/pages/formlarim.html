@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %} Formlarım {% endblock %}
+
+{% block content %} 
+
+
+<div class="container p-3 my-3 " style="background: rgba(0, 0, 0, 0.3); border-radius: 17px;">
+<table class="table"  style="color: #FFF5F5">
+    <thead  style="background-color:#7195B6"> 
+      <tr>
+        <th scope="col">
+          <button class="btn btn-secondary" type="button" >
+            Konu Başlığı
+          </button>
+          </th>
+          <th scope="col">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Kategori
+          </button>
+          <div action = "{%url 'liste' %}" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <a class="dropdown-item" href="?sorgu=Hijyen">Hijyen</a>
+            <a class="dropdown-item" href="?sorgu=Taşıma">Taşıma</a>
+            <a class="dropdown-item" href="?sorgu=Sarf Malzeme">Sarf Malzeme</a>
+          </div></th>
+          <th scope="col"><button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Onay Durumu
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2" >
+            <a class="dropdown-item" href="?sorgu=Onay Bekliyor" >Onay Bekliyor</a>
+            <a class="dropdown-item" href="?sorgu=Onaylandı" >Onaylandı</a>
+            <a class="dropdown-item" href="?sorgu=Reddedildi">Reddedildi</a>
+            <a class="dropdown-item" href="?sorgu=İşlem Yapılıyor">İşlem Yapılıyor</a>
+          </div>
+        </th>
+          <th scope="col">
+            <button class="btn btn-secondary" type="button" >
+            Tarih/Saat
+          </button>
+          </th>
+        </tr>
+      <form action="{% url 'formlarim' %}" class="form-inline my-2 my-lg-0">
+        <div class="input-group mb-3">
+          <input class="form-control mr-sm-2" name="sorgu" type="search" placeholder="Search" aria-label="Search" > 
+          <div class="input-group-append">
+            <button class="btn btn-secondary" type="submit"  >Search</button>
+          </div>
+        </div>
+      </form>
+    </thead>
+
+    <tbody>
+       
+        {% for yazi in yazilarim %}
+        <tr>
+          {% if yazi.kategori_adi == "Taşıma" %}
+            <td><a href="{% url 'detay' Formslug='tasima' slug=yazi.slug %}">{{ yazi.baslik }}</a></td>
+
+          {% else %}
+            <td><a href="{% url 'detay' Formslug=yazi.kategori_adi|lower|slugify  slug=yazi.slug %}">{{ yazi.baslik }}</a></td>
+          {% endif %}
+
+          <td>{{yazi.kategori_adi}}</td>
+          {%if yazi.islem_durumu == 'Onay Bekliyor'%}
+          <td style="color: rgb(242, 255, 0);">{{yazi.islem_durumu}}</td>
+          {%endif%}
+          {%if yazi.islem_durumu == 'Onaylandı'%}
+          <td style="color: rgb(27, 182, 19); ">{{yazi.islem_durumu}}</td>
+          {%endif%}
+          {%if yazi.islem_durumu == 'Reddedildi'%}
+          <td style="color: rgb(255, 0, 0);">{{yazi.islem_durumu}}</td>
+          {%endif%}
+          {%if yazi.islem_durumu == 'İşlem Yapılıyor'%}
+          <td style="color: rgb(0, 149, 255);">{{yazi.islem_durumu}}</td>
+          {%endif%}
+          <td>{{yazi.olusturulma_tarihi}}</td>
+        </tr>
+    
+        {% endfor %}
+
+        {% for yazi in yazilarim %}
+          {% empty %}
+              <div class="alert alert-warning" role="alert"> <!--bootstrapten alıdığımız  geri bildirim mesajı ekranıyla kullanıcıya yorum silinirse geri bildirim mesajı oluşturur.-->
+                
+                <p>Oluşturulan Bir Form Bulunmamaktadır.</p>    
+            
+              </div>
+        {%endfor%}
+
+    </tbody>
+    
+</table>
+</div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+      {% if yazilarim.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?sayfa={{yazilarim.previous_page_number}}" tabindex="-1" aria-disabled="true">Önceki</a> <!-- yazilar.previous_page_number ilgili sayfadan önceki sayfanın numarasını gösterir-->
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Önceki</a>
+        </li>
+  
+      {% endif %}
+
+      <li class="page-item">
+        <a class="page-link" href="#">{{yazilarim.number}}</a>
+      </li>
+      
+      {% if yazilarim.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?sayfa={{yazilarim.next_page_number}}">Sonraki</a>
+        </li>
+  
+        <li class="page-item">
+          <a class="page-link" href="?sayfa={{yazilarim.paginator.num_pages}}">Son Sayfa</a>
+        </li>
+        
+      {% endif %}
+      
+     
+      
+    </ul>
+  </nav>
+  
+  
+{%endblock%}

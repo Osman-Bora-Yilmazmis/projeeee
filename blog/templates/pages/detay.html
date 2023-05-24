@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{%block title%} {{form.baslik}} {%endblock%}
+
+
+{% block content %} 
+
+<div style="margin-top: 60px ; margin-left: 20px; margin-right: 20px; height: 500px; background: #D9D9D9;">
+
+    <div style="box-sizing: border-box; position: absolute; width: 160px; height: 30px; margin-top: 25px; margin-left: 30px; background: #B1C2D2; border: 1px solid #505A63; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); display: flex; align-items: center; justify-content: center;">
+        <div id="form_gonderen" name="form_gonderen" style="padding: 4px;">
+            {{ form.form_gonderen.first_name }} {{ form.form_gonderen.last_name }} </div>
+    </div>
+
+    <div style="box-sizing: border-box; position: absolute; width: 160px; height: 30px; margin-top: 25px; margin-left: 230px; background: #B1C2D2; border: 1px solid #505A63; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); display: flex; align-items: center; justify-content: center;">
+        <div id="form_gonderen" name="form_gonderen" style="padding: 4px;"> {{form.kategori_adi}} </div>
+    </div>
+
+    <div style="box-sizing: border-box; position: absolute; width: 300px; height: 30px; margin-top: 25px; margin-left: 435px; background: #B1C2D2; border: 1px solid #505A63; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); display: flex; align-items: center; justify-content: center;">
+        <div id="form_gonderen" name="form_gonderen" style="padding: 4px;"> {{form.baslik}} </div>
+    </div>
+
+
+    <div style="box-sizing: border-box; position: absolute; width: 160px; height: 30px; margin-top: 25px; right: 160px; background: #B1C2D2; border: 1px solid #505A63; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); display: flex; align-items: center; justify-content: center;">
+        <div id="olusturulma_tarihi" name="olusturulma_tarihi" style="padding: 4px;">{{ form.olusturulma_tarihi }}</div>
+    </div>
+
+
+    {% if form.kategori_adi == 'Hijyen' or form.kategori_adi == 'Taşıma' %}
+            
+    <div style=" position: absolute; margin-left: 35px; margin-top: 420px;">Görevli Kişi:</div>
+    <div id="gorevli_kisi" name="gorevli_kisi" style=" text-align: initial; border-radius: 0; box-sizing: border-box; position: absolute; width: 160px; height: 30px; margin-top: 420px; margin-left: 135px; background: #B1C2D2; border: 1px solid #505A63; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); display: flex; align-items: center; justify-content: center;" > 
+        {% if form.islem_durumu ==  "İşlem Yapılıyor"%}
+        {{ form.gorevli_kisi }}
+         {% else%} 
+            Görevli Yok
+          {%endif%}</div>
+    {% endif %}
+
+
+    <form method="POST">
+        {% csrf_token %}
+    
+            <textarea style= " box-sizing:border-box; position: absolute; width: 1201px; height: 300px; background: #B1C2D2; border: 1px solid #505A63; 
+             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); margin-top: 100px; right: 160px; resize: none;" 
+             id="aciklama" name="aciklama" {% if form.islem_durumu != 'Onay Bekliyor' or request.user.is_staff %} readonly {% endif %}> {{ form.aciklama }}</textarea>
+
+
+            <div style="box-sizing: border-box; position: absolute; width: 160px; height: 30px; margin-top: 330px; margin-left: 35px; background: #505A63; border: 1px solid #505A63; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); display: flex; align-items: center; justify-content: center;">
+                <div id="islem_durumu" name="islem_durumu" style="padding: 4px; 
+                {% if form.islem_durumu == 'Onay Bekliyor' %} color:rgb(242, 255, 0);
+                {% elif form.islem_durumu == 'Onaylandı' %} color:rgb(27, 182, 19); 
+                {% elif form.islem_durumu == 'Reddedildi' %} color: rgb(255, 0, 0); 
+                {% elif form.islem_durumu == 'İşlem Yapılıyor' %} color: rgb(0, 149, 255);
+                {% endif %}" > {{ form.islem_durumu }}</div>
+            </div> 
+
+        
+        {{ update_form.as_p }}
+        
+        {% if form.islem_durumu == 'Onay Bekliyor' and not request.user.is_staff %}    
+         <div class="form-group" style= "position: fixed;  bottom:70px; right: 160px;" >
+            <button class="btn btn-danger mt-6 mb-3" type="submit "name="guncelle" >Güncelle</button>
+            <button class="btn btn-danger mt-6 mb-3" type="submit" name="sil">Sil</button>
+            {% endif %}
+            {% if form.islem_durumu == 'İşlem Yapılıyor' and request.user.is_staff %}
+            <button class="btn btn-success mt-3 mb-3" type="submit" name="onayla">Onayla</button>  
+            {% endif %}
+            {% if form.islem_durumu == 'Onay Bekliyor' and request.user.is_staff %}
+                
+                {% if form.kategori_adi == 'Hijyen' or form.kategori_adi == 'Taşıma' and not form.gorevli_kisi %}
+                    <!-- Koşul sağlandığında yapılacak işlemler -->
+                {% else %}
+                    <button class="btn btn-success" type="submit" name="onayla">Onayla</button>
+                {% endif %}
+            <button class="btn btn-danger mt-3 mb-3" type="submit" name="reddet">Reddet</button>
+            
+                {% if form.kategori_adi == 'Hijyen' or form.kategori_adi == 'Taşıma' %}
+                <button class="btn btn-primary" type="submit" name="gorev_ata">Görev Ata</button>
+                {% endif %}
+             {% endif %}
+        </div> 
+
+        {% if form.kategori_adi == 'Sarf Malzeme' %}
+                <select id="sarf_malzeme_adi" name="sarf_malzeme_adi" style=" text-align: center; box-sizing: border-box; position: absolute; width: 160px; height: 30px; margin-top: 420px; margin-left: 35px; background: #B1C2D2; border: 1px solid #505A63; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); display: flex; align-items: center; justify-content: center;"{% if form.islem_durumu != 'Onay Bekliyor' or request.user.is_staff %} disabled {% endif %}>
+                    <option style= "padding: 4px;" value="{{ form.sarf_malzeme_adi }}" selected>{{ form.sarf_malzeme_adi }}</option>
+                    {% for malzeme in malzemeler %}
+                    {% if malzeme != form.sarf_malzeme_adi.malzeme_adi %}
+                            <option style= "padding: 4px;" value="{{ malzeme }}">{{ malzeme }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+
+        <input type="number" id="sarf_malzeme_adedi" name="sarf_malzeme_adedi" style=" text-align: center; border-radius: 0; box-sizing: border-box; position: absolute; width: 160px; height: 30px; margin-top: 420px; margin-left: 250px; background: #B1C2D2; border: 1px solid #505A63; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); display: flex; align-items: center; justify-content: center;" value="{{ form.sarf_malzeme_adedi }}" {% if form.islem_durumu != 'Onay Bekliyor' or request.user.is_staff %} readonly {% endif %}>
+
+    {% endif %}
+
+    
+    
+    </form>
+
+
+</div>
+
+    {% endblock %}
+
+
+
+
+
+
+
+
+
+
+

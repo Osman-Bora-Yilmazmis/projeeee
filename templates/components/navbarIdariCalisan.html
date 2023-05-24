@@ -1,0 +1,44 @@
+
+{% comment %} <div {% if request.user.is_authenticated%} class = "col-sm-9" {%else%} class = "col-12" {%endif%}> {% endcomment %}
+    <nav class="navbar navbar-expand-lg" style="background-color: #3F4850;">
+        <div id='sunportal' class="container">
+          <a class="navbar-brand" href="https://www.suntekstil.com.tr/">SUNPORTAL</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{% url 'liste' %}">Liste</a>
+                {% comment %} {% url 'kategori' kategoriSlug=kategori.slug %} liste içerisinde talep seçtikten sonra bunu kullan{% endcomment %}
+              </li>
+              {% comment %} <li class="nav-item">
+                <a class="nav-link" href="{% url 'form' %}">Form</a>
+        
+              </li> {% endcomment %}
+    
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{% url 'rapor' %}">Rapor</a>            
+              </li>
+    
+              
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Profil
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{%url 'profil-guncelle'%}">Profili Güncelle</a></li>
+                  <li><a class="dropdown-item" href="{%url 'sifre-degistir'%}">Şifre Değiştir</a></li>
+                  
+                </ul>
+              </li>
+    
+            </ul> 
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="{%url 'cikis'%}">Çıkış Yap</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>

@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block title %} Rapor {% endblock %}
+
+{% block content %}
+<h2 style="color: black; font-weight: bold; text-align: center;">İdari Personellerin İstatistikleri</h2>
+<hr>
+<div class="container p-3 my-3" style="background: rgba(0, 0, 0, 0.3); border-radius: 17px;">
+  <div class="row mt-2">
+    <div class="col-md-4">
+      <h3 style="padding-top: 140px; text-align: center; color: grey;">Pınar Hanım</h3>
+      <p style="text-align: center; color: grey;"><strong>Pınar Hanım Toplam Form Sayısı: {{ pinar_toplam_veri }}</strong></p>
+
+      <h3 style="padding-top: 280px; text-align: center; color: grey;">Bahar Hanım</h3>
+      <p style="text-align: center; color: grey;"><strong>Bahar Hanım Toplam Form Sayısı: {{ bahar_toplam_veri }}</strong></p>
+    </div>
+    
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-md-8" style="margin-left: 70px;">
+          <h4 style="display: inline-block; color: grey;">Form Durumları</h4>
+          <h4 style="display: inline-block; margin-left: 160px; color: grey;">Form Kategorileri</h4>
+          <br>
+          
+        </div>
+        
+        <div style="height: 300px; width: 300px;">
+          <canvas id="myChart"></canvas>
+        </div>
+        <div style="height: 50px; width: 50px;"></div>
+        <div style="height: 300px; width: 300px;">
+          <canvas id="myChart3"></canvas>
+        </div>
+      </div>
+      <br><br><br>
+      <div class="row">
+        <div style="height: 300px; width: 300px;">
+          <canvas id="myChart2"></canvas>
+        </div>
+        <div style="height: 50px; width: 50px;"></div>
+        <div style="height: 300px; width: 300px;">
+          <canvas id="myChart4"></canvas>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+      <script>
+        const ctx = document.getElementById('myChart');
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: [
+              'Onay Bekleniyor',
+              'Onaylandı',
+              'Reddedildi',
+              'İş Yapılıyor',
+            ],
+            datasets: [{
+              label: 'Form Sayısı',
+              data: {{ pinar_veri_sayilari|safe }},
+              backgroundColor: [
+                'yellow',
+                'rgb(59,248,28)',
+                'rgb(255,0,0)',
+                'rgb(28,200,255)',
+              ],
+              hoverOffset: 4
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                labels: {
+                  color: 'white',
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        const ctx3 = document.getElementById('myChart3');
+        new Chart(ctx3, {
+          type: 'pie',
+          data: {
+            labels: [
+              'Hijyen',
+              'Taşıma',
+              'Sarf Malzeme'
+            ],
+            datasets: [{
+              label: 'Form Sayısı',
+              data: {{ pinar_form_sayilari|safe }},
+              backgroundColor: [
+                'purple',
+                'black',
+                'grey',
+              ],
+              hoverOffset: 4
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                labels: {
+                  color: 'white', 
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      </script>
+
+      <br><br><br>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+      <script>
+        const ctx2 = document.getElementById('myChart2');
+        new Chart(ctx2, {
+          type: 'pie',
+          data: {
+            labels: [
+              'Onay Bekleniyor',
+              'Onaylandı',
+              'Reddedildi',
+              'İş Yapılıyor',
+            ],
+            datasets: [{
+              label: 'Form Sayısı',
+              data: {{ bahar_veri_sayilari|safe }},
+              backgroundColor: [
+                'yellow',
+                'rgb(59,248,28)',
+                'rgb(255,0,0)',
+                'rgb(28,200,255)',
+              ],
+              hoverOffset: 4
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                labels: {
+                  color: 'white',
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        const ctx4 = document.getElementById('myChart4');
+        new Chart(ctx4, {
+          type: 'pie',
+          data: {
+            labels: [
+              'Hijyen',
+              'Taşıma',
+              'Sarf Malzeme'
+            ],
+            datasets: [{
+              label: 'Form Sayısı',
+              data: {{ bahar_form_sayilari|safe }},
+              backgroundColor: [
+                'purple',
+                'black',
+                'grey',
+              ],
+              hoverOffset: 4
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                labels: {
+                  color: 'white', 
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      </script>
+    </div>
+  </div>
+</div>
+<br><br><br>
+
+{% endblock %}
