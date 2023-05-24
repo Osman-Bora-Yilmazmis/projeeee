@@ -22,6 +22,12 @@ class DetayView(View):
         Model = model_map.get(Formslug)
 
         form = get_object_or_404(Model, slug=slug)
+
+        
+        if request.user.is_staff == False and request.user.username != form.form_gonderen.username:
+            return HttpResponseForbidden("Bu sayfaya erişmek için yetkiniz yok.")
+        
+        
         malzemeler = MalzemeModel.objects.values_list('malzeme_adi', flat=True).distinct()
         gorevliler = GorevliModel.objects.values_list('gorevli_isim_soyisim', flat=True).distinct()
 
@@ -40,9 +46,12 @@ class DetayView(View):
 
         
 
+
         Model = model_map.get(Formslug)
 
         form = get_object_or_404(Model, slug=slug)
+
+    
         malzemeler = MalzemeModel.objects.values_list('malzeme_adi', flat=True).distinct()
         gorevliler = GorevliModel.objects.values_list('gorevli_isim_soyisim', flat=True).distinct()
 
@@ -75,10 +84,7 @@ class DetayView(View):
         elif 'gorev_ata' in request.POST:
             if Formslug == "hijyen" or Formslug == 'tasima':
                 
-                gorevli_kisi = request.POST.get('gorevli_kisi')
-                print(gorevli_kisi)
-                print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
-                islem_durumu = request.POST.get('islem_durumu')
+                gorevli_kisi = request.POST.get('gorevli')
                 form.islem_durumu = 'İşlem Yapılıyor'
                 gorevli = GorevliModel.objects.get(gorevli_isim_soyisim=gorevli_kisi)
                          
